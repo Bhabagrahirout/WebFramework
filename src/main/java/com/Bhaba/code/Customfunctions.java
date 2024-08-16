@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import browserFactory.BrowserFactory;
+import listeners.ExtentReport;
 
 public class Customfunctions {
 
@@ -68,24 +69,44 @@ public class Customfunctions {
 	public static void frameSwitchByDefault() {
 		Main.driver.switchTo().defaultContent();
 	}
+
 //		select>>>>>>>>>>>
-	public static void selectByIndex(WebElement element,String dataField) {
-		Select select=new Select(element);
-		int i=Integer.parseInt(dataField);
+	public static void selectByIndex(WebElement element, String dataField) {
+		Select select = new Select(element);
+		int i = Integer.parseInt(dataField);
 		select.selectByIndex(i);
 	}
-	
-	public static void selectByValue(WebElement element,String dataField) {
-		Select select=new Select(element);
+
+	public static void selectByValue(WebElement element, String dataField) {
+		Select select = new Select(element);
 		select.selectByValue(dataField);
 		System.out.println(dataField);
 	}
-	public static void selectByVisibleText(WebElement element,String dataField) {
-		Select select=new Select(element);
+
+	public static void selectByVisibleText(WebElement element, String dataField) {
+		Select select = new Select(element);
 		select.selectByVisibleText(dataField);
 	}
 
+	public static void CheckVisibility(WebElement element) {
+
+		String status ="";
+		if (element != null) {
+			status = String.valueOf(element.isDisplayed());
+		}
+
+		if (status.equalsIgnoreCase("true")) {
+			((JavascriptExecutor) Main.driver).executeScript("arguments[0].style.border='solid green 2px';", element);
+			ExtentReport.addImage(true);
+
+		} else {
+			ExtentReport.addImage(false);
+		}
+
+	}
+
 	public static WebElement makeWebelement(String locatorName, String locatorValue) {
+		System.out.println("Wait for within 30 sec");
 		WebDriverWait wait = new WebDriverWait(Main.driver, Duration.ofSeconds(10));
 		WebElement ele = null;
 		locatorName = locatorName.toLowerCase();
@@ -121,6 +142,10 @@ public class Customfunctions {
 				System.out.println("Element not found within the : " + locatorValue);
 			}
 		}
+//		Main.action.equalsIgnoreCase("CheckVisibility")
+//		{
+//			
+//		}
 
 		return ele;
 	}

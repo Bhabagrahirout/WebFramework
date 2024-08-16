@@ -49,6 +49,7 @@ public class Main {
 	public static boolean reportStatus;
 	public static String stringToAppend="";
 	public static String extentReportTestCase="";
+	public static boolean addLogs=false;
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	public static WebDriver driver=null;
 	public static WebDriverWait wait;
@@ -93,6 +94,9 @@ public class Main {
 					dataField = dataRecordSet.getField("dataField");
 					action = dataRecordSet.getField("action");
 					testCaseNo = dataRecordSet.getField("testCaseNo");
+					String input = testCaseNo;
+					String[] parts = input.split("_");
+					testCaseNo = parts[0] + "_" + parts[1];
 					testCaseType = dataRecordSet.getField("testCaseType");
 					description = dataRecordSet.getField("description");
 					scenarioID = dataRecordSet.getField("scenarioID");
@@ -106,6 +110,7 @@ public class Main {
 					else if(!extentReportTestCase.equalsIgnoreCase(testCaseNo))
 					{
 						reportStatus=false;
+						extentReportTestCase=testCaseNo;
 						//ExtentReport.endTest();
 					}
 				
@@ -113,15 +118,13 @@ public class Main {
 					{
 						if(testCaseType.equalsIgnoreCase("positive"))
 						{
-							testName=scenarioID+"_"+module+"("+description+")";
-							testName="<font color=\"Green\"></font>"+testName;
+							testName="<font color='Blue'>"+scenarioID+"_"+"</font>"+"<font color='maroon'>"+module+"_"+"</font>"+"<font color='green'>"+testCaseNo+"</font>"+"<font color='black'>"+"("+description+")"+"</font>";
 							ExtentReport.startTest(testName);
 							reportStatus=true;
 						}
 						else if(testCaseType.equalsIgnoreCase("Negative"))
 						{
-							testName=scenarioID+"_"+module+"("+description+")";
-							testName="<font color=\"Red\"></font>"+testName;
+							testName="<font color='Blue'>"+scenarioID+"_"+"</font>"+"<font color='maroon'>"+module+"_"+"</font>"+"<font color='Red'>"+testCaseNo+"</font>"+"<font color='black'>"+"("+description+")"+"</font>";
 							ExtentReport.startTest(testName);
 							reportStatus=true;
 						}
@@ -139,18 +142,22 @@ public class Main {
 								+"<font color=\"Royal blue\"><b> DataField Value - </b></font>"+ dataFieldValue;
 								
 					}
+					details="<font color=\"purple\"><b>Step - </b></font>" + No
+							+"<font color=\"maroon\"><b> Module - </b></font>"+module
+							+ "<font color='crimson'><b> Action -</b></font>"+action
+							+"<br>"+stringToAppend;
 
 					Functions.actions(objectType,locatorName,locatorValue,dataFieldValue,action);
 					System.out.println("\n \n");
 				
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					details="<font color=\"purple\"><b>Step - </b></font>" + No
-							+"<font color=\"maroon\"><b> Module - </b></font>"+module
-							+ "<font color='crimson'><b> Action -</b></font>"+action
-							+"<br>"+stringToAppend;
-					ExtentReport.addLogs("info", details);
-					ExtentReport.endTest();// flush for every line
-					stringToAppend="";
+					if(addLogs!=true)
+					{
+						ExtentReport.addLogs("info", details);
+						ExtentReport.endTest();// flush for every line
+						stringToAppend="";
+					}
+					addLogs=false;
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				}
 

@@ -2,6 +2,7 @@ package com.Bhaba.code;
 
 import org.openqa.selenium.WebElement;
 
+
 public class Functions {
 
 	static WebElement element = null;
@@ -52,6 +53,9 @@ public class Functions {
 				Customfunctions.selectByValue(element, dataField);
 			} else if (action.equalsIgnoreCase("selectByVisibleText")) {
 				Customfunctions.selectByVisibleText(element, dataField);
+			} else if (action.equalsIgnoreCase("CheckVisibility")) {
+				Customfunctions.CheckVisibility(element);
+//				
 			}
 
 		} catch (Exception e) {
