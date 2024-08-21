@@ -73,7 +73,8 @@ public class ExtentReport {
 
 		String screenshotDir = extentReportPath + File.separator + "Images";
 		new File(screenshotDir).mkdir();
-		String imageName = screenshotDir + File.separator + Main.module + "_" + Main.No + ".png";
+		String today=new SimpleDateFormat("dd_MM_YYYY HH:MM").format(new Date());
+		String imageName = screenshotDir + File.separator + Main.module + "_Step_" + Main.No+"_"+today + ".png";
 		File file = new File(imageName);
 		Path destinationPath = file.toPath();
 		try {
