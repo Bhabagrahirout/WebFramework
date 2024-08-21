@@ -9,25 +9,43 @@
 
 
 	<build>
-		<finalName>BHABA_JAR_${Mytime}</finalName> <!--
-		it give the name -->
+		 <!--it set the jar name -->
+		<finalName>BHABA_JAR_${Mytime}</finalName>
+		
 
 		<plugins>
-
-			<!-- this is for add the entry point means where the exicution
-			start-->
+			<!-- this  add the entry point of exicution in  MainFest-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>3.2.0</version>
 				<configuration>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
+							<classpathPrefix>MyallDependencies/</classpathPrefix>
 							<mainClass>com.Bhaba.code.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<!-- Maven Dependency Plugin for copying dependencies to MyallDependencies-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.2</version> <!-- Version of the plugin -->
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase> 
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/MyallDependencies</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- add for time stamp -->
 			<plugin>

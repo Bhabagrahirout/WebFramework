@@ -7,29 +7,24 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ReadPropertyFile {
-	
+
 	public static String name;
-	
-	public static void read()
-	{
-		Properties prop=new Properties();
-		try {
-			//use .. for jar generate
-			InputStream in=new FileInputStream(System.getProperty("user.dir")+File.separator+"/Config.properties");
-//			InputStream in=new FileInputStream(System.getProperty("user.dir")+File.separator+"../Config.properties");
+
+	public static void read() {
+		Properties prop = new Properties();
+		String path = System.getProperty("user.dir");
+
+		try (FileInputStream in = new FileInputStream(
+				path + (path.endsWith("target") ? File.separator + ".." : "") + File.separator + "Config.properties")) {
+
 			prop.load(in);
-			
-			name=prop.getProperty("name");
-			
-			System.out.println("--------------------Readproperty data Successfully--------------------");
-			
-			
-			
+			String name = prop.getProperty("name");
+
+			System.out.println("--------------------Read property data Successfully--------------------");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//		return name;
 	}
-	
 
 }
