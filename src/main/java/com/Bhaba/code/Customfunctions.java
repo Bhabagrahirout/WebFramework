@@ -87,7 +87,7 @@ public class Customfunctions {
 		Select select = new Select(element);
 		select.selectByVisibleText(dataField);
 	}
-
+//		checkvisibility>>>>>>>>>>>>>>>>
 	public static void CheckVisibility(WebElement element) {
 
 		String status ="";
@@ -103,6 +103,11 @@ public class Customfunctions {
 			ExtentReport.addImage(false);
 		}
 
+	}
+//		Quit
+	public static void quit()
+	{
+		Main.driver.quit();
 	}
 
 	public static WebElement makeWebelement(String locatorName, String locatorValue) {

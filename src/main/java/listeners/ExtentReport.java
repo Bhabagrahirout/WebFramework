@@ -22,32 +22,33 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 public class ExtentReport {
 	public static String userPath = null;
 	public static String extentReportPath = null;
-	static ExtentReports report = new ExtentReports();
+	static ExtentReports report = null;
 	static ExtentTest test = null;
 
 	public static void startReport(String reportName) { // only send the module name
 
-		Calendar cal = Calendar.getInstance();
-		userPath = System.getProperty("user.dir");
-		extentReportPath = userPath + File.separator + "Reports" + File.separator + String.valueOf(cal.get(cal.YEAR))
-				+ File.separator + new SimpleDateFormat("MMMM").format(cal.getTime()) + File.separator
-				+ String.valueOf(cal.get(cal.DATE)) + File.separator + reportName;
-		File file = new File(extentReportPath);
-		file.mkdirs();
+		if (Main.credentialStatus == 1) {
+			Date date = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
+			String time = dateFormat.format(date);
 
-		Date date = new Date();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-		String finalDate = dateFormat.format(date);
+			Calendar cal = Calendar.getInstance();
+			userPath = System.getProperty("user.dir");
+			extentReportPath = userPath + File.separator + "Reports" + File.separator
+					+ String.valueOf(cal.get(cal.YEAR)) + File.separator
+					+ new SimpleDateFormat("MMMM").format(cal.getTime()) + File.separator
+					+ String.valueOf(cal.get(cal.DATE)) + File.separator + reportName + File.separator + time;
+			File file = new File(extentReportPath);
+			file.mkdirs();
+		}
+		String extentReportName = extentReportPath + File.separator + reportName + "_FOR_Credential->"
+				+ Main.credentialStatus + ".html";
 
-		String extentReportName = extentReportPath + File.separator + reportName + "_" + finalDate + ".html";
 		ExtentSparkReporter spark = new ExtentSparkReporter(extentReportName);
 		spark.config().setReportName(reportName);
 
-//		 String customCSS = "body { background-color: #00FF00; }"; // Example: Green background
-
-//		spark.config().setCss(customCSS);
-
 		spark.config().setTheme(Theme.STANDARD);
+		report = new ExtentReports();
 		report.attachReporter(spark);
 	}
 
@@ -73,8 +74,8 @@ public class ExtentReport {
 
 		String screenshotDir = extentReportPath + File.separator + "Images";
 		new File(screenshotDir).mkdir();
-		String today=new SimpleDateFormat("dd_MM_YYYY HH:MM").format(new Date());
-		String imageName = screenshotDir + File.separator + Main.module + "_Step_" + Main.No+"_"+today + ".png";
+		String today = new SimpleDateFormat("dd_MM_YYYY HH:MM").format(new Date());
+		String imageName = screenshotDir + File.separator + Main.module + "_Step_" + Main.No + "_" + today + ".png";
 		File file = new File(imageName);
 		Path destinationPath = file.toPath();
 		try {

@@ -12,7 +12,7 @@ import dataProvider.FilloExcelReader;
 import dataProvider.ReadPropertyFile;
 import listeners.ExtentReport;
 
-public class Main {
+public class Main2 {
 
 	public static Recordset mainRecordSet = null, testRecordSet = null, dataRecordSet = null, valueRedcordSet = null;
 	public static String mainSheetPath;
@@ -52,9 +52,7 @@ public class Main {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	public static WebDriver driver = null;
 	public static WebDriverWait wait;
-//	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	public static int credentialStatus=1;  // for sheet2 data
-	public static int moduleStatus=1;
+
 	public static void main(String[] args) {
 
 		System.out.println("Exicution Start....................");
@@ -75,7 +73,7 @@ public class Main {
 				module = mainRecordSet.getField("module");
 				sheetPath = mainRecordSet.getField("sheetPath");
 
-				
+				ExtentReport.startReport(module);
 
 //				***************datasheet read start*******************
 				dataSheetPath = System.getProperty("user.dir") + File.separator + "DataSheet" + File.separator
@@ -86,8 +84,6 @@ public class Main {
 				while (dataRecordSet.next()) 
 				{
 					// exicute all data record in sheet2 one by one 
-					
-					ExtentReport.startReport(module);
 					
 					testRecordSet = FilloExcelReader.getRecord(dataSheetPath, "sheet1");
 					while (testRecordSet.next()) {
@@ -163,9 +159,7 @@ public class Main {
 						addLogs = false;
 						// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					}
-					System.out.println("*********successfully exicuted for "+credentialStatus++ +" credential**********\n\n" );
 				}
-				System.out.println("************successfully exicuted for "+moduleStatus++ +" Module***********\n\n" );
 			}
 		} catch (FilloException e) {
 			e.printStackTrace();

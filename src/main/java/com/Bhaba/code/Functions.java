@@ -55,8 +55,10 @@ public class Functions {
 				Customfunctions.selectByVisibleText(element, dataField);
 			} else if (action.equalsIgnoreCase("CheckVisibility")) {
 				Customfunctions.CheckVisibility(element);
-//				
+			} else if (action.equalsIgnoreCase("quit")) {
+				Customfunctions.quit();
 			}
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
