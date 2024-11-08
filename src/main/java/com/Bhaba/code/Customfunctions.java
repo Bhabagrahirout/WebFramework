@@ -1,7 +1,18 @@
 package com.Bhaba.code;
 
 import java.time.Duration;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.mail.BodyPart;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.internet.MimeMultipart;
+
+import org.jsoup.Jsoup;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -11,6 +22,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import browserFactory.BrowserFactory;
+import dataProvider.ReadPropertyFile;
 import listeners.ExtentReport;
 
 public class Customfunctions {
@@ -87,10 +99,11 @@ public class Customfunctions {
 		Select select = new Select(element);
 		select.selectByVisibleText(dataField);
 	}
+
 //		checkvisibility>>>>>>>>>>>>>>>>
 	public static void CheckVisibility(WebElement element) {
 
-		String status ="";
+		String status = "";
 		if (element != null) {
 			status = String.valueOf(element.isDisplayed());
 		}
@@ -104,10 +117,65 @@ public class Customfunctions {
 		}
 
 	}
-//		Quit
-	public static void quit()
-	{
+
+//		Quit >>>>>>>>>>>>>>>>>>>>>
+	public static void quit() {
 		Main.driver.quit();
+	}
+
+//		GmailOPT Fetch
+
+	public static void getGmailOTP() {
+	
+		try {
+			String otp = "", result = "";
+			Properties props = new Properties();
+			props.put("mail.store.protocol", "imaps");
+			Session session = Session.getInstance(props, null);
+
+			Store store = session.getStore();
+			store.connect("smtp.gmail.com", ReadPropertyFile.email, ReadPropertyFile.passkey);
+
+			Folder inbox = store.getFolder("INBOX");
+
+			inbox.open(Folder.READ_ONLY);
+
+			Message[] messages = inbox.getMessages();
+			Message message = messages[0];
+			if (message.isMimeType("text/plain")) {
+				result = message.getContent().toString();
+			} 
+			else if (message.isMimeType("multipart/*")) {
+
+				MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
+				StringBuilder res = new StringBuilder();
+				int count = mimeMultipart.getCount();
+				for (int i = 0; i < count; i++) {
+
+					BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+					if (bodyPart.isMimeType("text/plain")) {
+						res.append(bodyPart.getContent());
+					} else if (bodyPart.isMimeType("text/html")) {
+						String html = (String) bodyPart.getContent();
+						String text = Jsoup.parse(html).text(); // Use JSoup to parse and extract text from HTML
+						res.append(text);
+					}
+				}
+				result = res.toString();
+			}
+			inbox.close(false);
+			store.close();
+			String regex = "otp\\s+(\\d{4,})";
+			Pattern pattern = Pattern.compile(regex);
+	        
+		    Matcher matcher = pattern.matcher(result);
+		    if(matcher.find()) 
+		    	otp=matcher.group(1);
+			
+		} catch (Exception e) {
+			System.out.println("Mail otp not fetched");
+		}
+
 	}
 
 	public static WebElement makeWebelement(String locatorName, String locatorValue) {
@@ -151,7 +219,7 @@ public class Customfunctions {
 //		{
 //			
 //		}
-		
+
 		return ele;
 	}
 

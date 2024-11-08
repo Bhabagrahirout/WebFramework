@@ -57,7 +57,10 @@ public class Functions {
 				Customfunctions.CheckVisibility(element);
 			} else if (action.equalsIgnoreCase("quit")) {
 				Customfunctions.quit();
+			} else if (action.equalsIgnoreCase("getGmailOTP")) {
+				Customfunctions.getGmailOTP();
 			}
+			
 			
 
 		} catch (Exception e) {

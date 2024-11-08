@@ -9,9 +9,9 @@
 
 
 	<build>
-		 <!--it set the jar name -->
+		<!--it set the jar name -->
 		<finalName>BHABA_JAR_${Mytime}</finalName>
-		
+
 
 		<plugins>
 			<!-- this  add the entry point of exicution in  MainFest-->
@@ -29,7 +29,8 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<!-- Maven Dependency Plugin for copying dependencies to MyallDependencies-->
+			<!-- Maven Dependency Plugin for copying dependencies to
+			MyallDependencies-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -37,12 +38,13 @@
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
-						<phase>prepare-package</phase> 
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/MyallDependencies</outputDirectory>
+							<outputDirectory>
+								${project.build.directory}/MyallDependencies</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
@@ -219,7 +221,12 @@
 			<version>5.7.1</version>
 			<scope>test</scope>
 		</dependency>
-
+		<!-- this convert html to text-->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.16.1</version> <!-- or the latest version -->
+		</dependency>
 
 	</dependencies>
 

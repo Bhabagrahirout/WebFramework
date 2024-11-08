@@ -9,6 +9,8 @@ import java.util.Properties;
 public class ReadPropertyFile {
 
 	public static String name;
+	public static String email;
+	public static String passkey;
 
 	public static void read() {
 		Properties prop = new Properties();
@@ -18,7 +20,9 @@ public class ReadPropertyFile {
 				path + (path.endsWith("target") ? File.separator + ".." : "") + File.separator + "Config.properties")) {
 
 			prop.load(in);
-			String name = prop.getProperty("name");
+			 name = prop.getProperty("name");
+			 email=prop.getProperty("email");
+			 passkey=prop.getProperty("passkey");
 
 			System.out.println("--------------------Read property data Successfully--------------------");
 
